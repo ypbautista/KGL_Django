@@ -1,0 +1,24 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtuelle Umgebung (WICHTIG!)
+venv/
+ENV/
+env/
+
+# Django-spezifisch
+*.sql
+*.dump
+*.sql.gz
+media/
+staticfiles/
+.env
+
+# VS Code Einstellungen
+.vscode/
+
+# Betriebssystem-spezifisch
+.DS_Store
+Thumbs.db

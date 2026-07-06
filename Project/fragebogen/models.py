@@ -39,7 +39,7 @@ class FragebogenAntworten(models.Model):
         ('JugendlichePerson', 'Jugendliche Person'),
         ('Bezugsperson', 'Bezugsperson'),
     ]
-    bewertet_von = models.CharField(max_length=15, choices=BEWERTET_VON_CHOICES)
+    bewertet_von = models.CharField(max_length=20, choices=BEWERTET_VON_CHOICES)
     Bezugsperson = models.ForeignKey(Bezugsperson, on_delete=models.CASCADE, null=True, blank=True)
     start_time = models.DateTimeField(auto_now_add=True)
 

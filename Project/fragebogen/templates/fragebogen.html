@@ -1,0 +1,47 @@
+<h1>{{ fragebogen.titel }}</h1>
+
+<h2>
+    {{ abschnitt.titel }}
+</h2>
+
+<p>
+    Abschnitt {{ abschnitt_nr }} von {{ gesamt_abschnitte }}
+</p>
+
+
+<form method="post">
+
+    {% csrf_token %}
+
+    {% for field in form %}
+
+    <div style="margin-bottom:20px;">
+
+        <label>
+            {{ field.label }}
+        </label>
+
+        <br>
+
+        {{ field }}
+
+    </div>
+
+    {% endfor %}
+
+
+    {% if abschnitt_nr > 1 %}
+    <button type="submit" name="action" value="back">
+        Zurück
+    </button>
+    {% endif %}
+
+    <button type="submit" name="action" value="next">
+        {% if abschnitt_nr == gesamt_abschnitte %}
+        Abschliessen
+        {% else %}
+        Weiter
+        {% endif %}
+    </button>
+
+</form>

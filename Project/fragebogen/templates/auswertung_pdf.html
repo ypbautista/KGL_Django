@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Auswertung PDF</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 1.5cm 2cm;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background-color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        main {
+            margin: 0 auto;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #4F81BD;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        .chart-container {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .chart-container img {
+            max-width: 100%;
+            height: auto;
+        }
+
+
+        table.uebersicht {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            margin-bottom: 40px;
+        }
+
+        table.uebersicht th, table.uebersicht td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            font-size: 12px;
+        }
+
+        table.uebersicht th {
+            background-color: #4F81BD;
+            color: white;
+            font-weight: bold;
+        }
+        
+        table.uebersicht tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+
+        .durchlauf-box {
+            page-break-inside: avoid;
+            border: 1px solid #4F81BD;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            padding: 15px;
+        }
+
+        .durchlauf-box h3 {
+            margin-top: 0;
+            color: #4F81BD;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .abschnitt-box {
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+
+        .abschnitt-box h4 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+
+        .kommentar {
+            background-color: #f9f9f9;
+            border-left: 4px solid #f39c12;
+            padding: 10px;
+            font-style: italic;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+
+        table.fragen-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        table.fragen-table td {
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+        }
+
+        table.fragen-table td.wert {
+            width: 40px;
+            text-align: center;
+            font-weight: bold;
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="header">
+            <h1>Verlaufsauswertung</h1>
+        </div>
+
+        <div class="chart-container">
+            {% if chart_image %}
+                <img src="data:image/png;base64,{{ chart_image }}" alt="Spinnendiagramm">
+            {% else %}
+                <p>Es sind noch keine Daten für ein Diagramm vorhanden.</p>
+            {% endif %}
+        </div>
+
+        <h2>Übersicht der Durchläufe</h2>
+        <table class="uebersicht">
+            <thead>
+                <tr>
+                    <th>Datum</th>
+                    <th>Status</th>
+                    <th>Ausgefüllt von</th>
+                    <th>Jugendliche Person</th>
+                    <th>Betreuer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in pdf_data %}
+                <tr>
+                    <td>{{ row.start_time|date:"d.m.Y H:i" }}</td>
+                    <td>
+                        {% if row.end_time %}
+                            Fertig
+                        {% else %}
+                            Offen
+                        {% endif %}
+                    </td>
+                    <td>{{ row.bewertet_von }}</td>
+                    <td>{{ row.jp_name }}</td>
+                    <td>{{ row.betreuer_name }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Detaillierte Antworten</h2>
+        {% for row in pdf_data %}
+        <div class="durchlauf-box">
+            <h3>Durchlauf vom {{ row.start_time|date:"d.m.Y" }} ({{ row.bewertet_von }})</h3>
+            
+            {% for abschnitt_ant in row.abschnitte %}
+            <div class="abschnitt-box">
+                <h4>{{ abschnitt_ant.fragebogen_abschnitt.titel }}</h4>
+                
+                {% if abschnitt_ant.kommentar %}
+                <div class="kommentar">
+                    <strong>Kommentar:</strong> {{ abschnitt_ant.kommentar }}
+                </div>
+                {% endif %}
+                
+                <table class="fragen-table">
+                    {% for ant in abschnitt_ant.antworten.all %}
+                    <tr>
+                        <td>{{ ant.frage.frage_vorlage.text }}</td>
+                        <td class="wert">{{ ant.antwort_wert }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </main>
+</body>
+</html>

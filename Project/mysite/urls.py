@@ -22,5 +22,5 @@ from fragebogen import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("fragebogen/", include("fragebogen.urls")),
-    path('export/<uuid:code>/', views.export_fragebogen_excel, name='export_excel'),
+    path('export/<uuid:code>/', views.export_fragebogen_pdf, name='export_pdf'),
 ]

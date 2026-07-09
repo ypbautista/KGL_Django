@@ -14,8 +14,8 @@ urlpatterns = [
     ),
 
     path(
-        "success/",
-        views.success,
-        name="success",
+        "export/<uuid:code>/", 
+        views.export_fragebogen_pdf, 
+        name="export_pdf"
     ),
 ]

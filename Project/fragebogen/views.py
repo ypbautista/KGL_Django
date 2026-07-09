@@ -1,7 +1,10 @@
+from django.utils import timezone
+
 import pandas as pd
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import (
+    Einladung,
     Fragebogen,
     FragebogenAntwort,
     FragebogenAbschnitt,
@@ -10,13 +13,30 @@ from .models import (
 )
 from .forms import AbschnittForm
 
-
-def abschnitt_ausfuellen(request, fragebogen_id, person_id, abschnitt_nr):
-
-    fragebogen = get_object_or_404(
-        Fragebogen,
-        id=fragebogen_id
+def fragebogen_start(request, code):
+    einladung = get_object_or_404(
+        Einladung,
+        code=code
     )
+
+    return render(
+        request,
+        "fragebogen_start.html",
+        {
+            "fragebogen": einladung.fragebogen,
+            "einladung": einladung,
+        }
+    )
+
+def abschnitt_ausfuellen(request, code, abschnitt_nr):
+
+    einladung = get_object_or_404(
+        Einladung,
+        code=code,
+    )
+
+    fragebogen = einladung.fragebogen
+    jugendliche_person = einladung.jugendliche_person
 
     abschnitte = list(
         fragebogen.abschnitte.all().order_by("reihenfolge")
@@ -29,10 +49,13 @@ def abschnitt_ausfuellen(request, fragebogen_id, person_id, abschnitt_nr):
     )
 
     antwort, created = FragebogenAntwort.objects.get_or_create(
-        jugendliche_person_id=person_id,
-        fragebogen=fragebogen,
-        bewertet_von="JugendlichePerson",
-    )
+        einladung=einladung,
+        defaults={
+            "jugendliche_person": jugendliche_person,
+            "fragebogen": fragebogen,
+            "bewertet_von": "JugendlichePerson",
+        }
+)
 
     abschnitt_antwort = AbschnittAntwort.objects.filter(
         fragebogen_antwort=antwort,
@@ -43,7 +66,7 @@ def abschnitt_ausfuellen(request, fragebogen_id, person_id, abschnitt_nr):
 
         form = AbschnittForm(
             request.POST,
-            frgebogen_abschnitt=fragebogen_abschnitt,
+            fragebogen_abschnitt=fragebogen_abschnitt,
             abschnitt_antwort=abschnitt_antwort,
         )
 
@@ -77,8 +100,7 @@ def abschnitt_ausfuellen(request, fragebogen_id, person_id, abschnitt_nr):
 
                 return redirect(
                     "abschnitt_ausfuellen",
-                    fragebogen_id=fragebogen.id,
-                    person_id=person_id,
+                    code=code,
                     abschnitt_nr=vorheriger_abschnitt,
                 )
 
@@ -90,10 +112,14 @@ def abschnitt_ausfuellen(request, fragebogen_id, person_id, abschnitt_nr):
 
                     return redirect(
                         "abschnitt_ausfuellen",
-                        fragebogen_id=fragebogen.id,
-                        person_id=person_id,
+                        code=code,
                         abschnitt_nr=naechster_abschnitt,
                     )
+                antwort.end_time = timezone.now()
+                antwort.save()
+
+                einladung.benutzt = True
+                einladung.save()
 
                 return redirect("success")
 
@@ -113,7 +139,6 @@ def abschnitt_ausfuellen(request, fragebogen_id, person_id, abschnitt_nr):
             "abschnitt": fragebogen_abschnitt,
             "abschnitt_nr": abschnitt_nr,
             "gesamt_abschnitte": len(abschnitte),
-            "person_id": person_id,
         }
     )
 
@@ -125,12 +150,21 @@ def success(request):
     )
 
 #http://127.0.0.1:8000/export/fragebogennummer/
-def export_fragebogen_excel(request, fragebogen_id):
-    durchlaeufe = FragebogenAntwort.objects.filter(fragebogen_id=fragebogen_id).prefetch_related(
-        'abschnitt_antworten__antworten__frage__frage_vorlage', 
-        'jugendliche_person', 
-        'bezugsperson'
+def export_fragebogen_excel(request, code):
+    durchlaeufe = (
+      FragebogenAntwort.objects
+      .filter(einladung__code=code)
+      .select_related(
+        "jugendliche_person",
+        "bezugsperson",
+        "einladung",
+        "fragebogen",
     )
+    .prefetch_related(
+        "abschnitt_antworten__fragebogen_abschnitt",
+        "abschnitt_antworten__antworten__frage__frage_vorlage",
+    )
+)
     
     excel_data = []
     
@@ -149,7 +183,6 @@ def export_fragebogen_excel(request, fragebogen_id):
             for ant in abschnitt_ant.antworten.all():
                 prefix = f"{ant.frage.reihenfolge} - {ant.frage.frage_vorlage.text[:30]}"
                 row[f"{prefix} (Wertung)"] = ant.antwort_wert
-                row[f"{prefix} (Motivation)"] = ant.motivations_wert
             
             row[f"Kommentar ({abschnitt_ant.fragebogen_abschnitt.titel})"] = abschnitt_ant.kommentar
             

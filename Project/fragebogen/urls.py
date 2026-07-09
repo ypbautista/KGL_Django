@@ -3,7 +3,12 @@ from . import views
 
 urlpatterns = [
     path(
-        "<int:fragebogen_id>/<int:person_id>/abschnitt/<int:abschnitt_nr>/",
+        "start/<uuid:code>/",
+        views.fragebogen_start,
+        name="fragebogen_start",
+    ),
+    path(
+        "start/<uuid:code>/abschnitt/<int:abschnitt_nr>/",
         views.abschnitt_ausfuellen,
         name="abschnitt_ausfuellen",
     ),

@@ -43,13 +43,13 @@ class AbschnittForm(forms.Form):
             self.fields[field_name] = forms.IntegerField(
                 label=abschnitt_frage.frage_vorlage.text,
                 min_value=1,
-                max_value=5,
+                max_value=7,
                 initial=initial,
                 widget=forms.NumberInput(
                     attrs={
                         "type": "range",
                         "min": 1,
-                        "max": 5,
+                        "max": 7,
                         "step": 1,
                     }
                 )

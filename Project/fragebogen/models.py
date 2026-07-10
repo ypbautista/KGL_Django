@@ -216,6 +216,13 @@ class AbschnittFrage(models.Model):
 
     reihenfolge = models.PositiveIntegerField()
 
+    def __str__(self):
+        return (
+            f"{self.fragebogen_abschnitt.titel} - "
+            f"Frage {self.reihenfolge}: "
+            f"{self.frage_vorlage.text[:50]}"
+        )
+
 
 
 class AbschnittAntwort(models.Model):
@@ -256,3 +263,10 @@ class FrageAntwort(models.Model):
             MaxValueValidator(7),
         ]
     )
+
+    def __str__(self):
+        return (
+            f"{self.abschnitt_antwort.fragebogen_antwort} | "
+            f"{self.frage.frage_vorlage.text[:40]} "
+            f"= {self.antwort_wert}/7"
+        )

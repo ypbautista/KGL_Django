@@ -52,7 +52,6 @@ Bash
 
 ```
 pip install -r requirements.txt
-pip install psycopg2-binary
 ```
 
 ### 5. PostgreSQL Datenbank aufsetzen

@@ -1,0 +1,217 @@
+/* betreuer_portal/static/betreuer_portal/css/portal.css */
+
+:root {
+
+    --brand-primary: #009de0;    
+    --brand-primary-hover: #007bb5; 
+    
+    --brand-accent: #d40068;      
+    
+    --bg-main: #f9f9f9;   
+    --bg-surface: #ffffff;       
+    
+    --text-main: #333333;         
+    --text-muted: #666666;        
+    
+    --border-color: #eaeaea;      
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+    --shadow-md: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: Arial, Helvetica, sans-serif; 
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+/* --- Navigation --- */
+.navbar {
+    background-color: var(--bg-surface);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    margin-bottom: 40px;
+    box-shadow: var(--shadow-sm);
+    border-bottom: 2px solid var(--brand-primary); 
+}
+
+.nav-links a {
+    color: var(--text-main);
+    text-decoration: none;
+    margin-right: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: var(--brand-primary);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    color: var(--text-muted);
+}
+
+main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px 40px 20px;
+}
+
+
+.btn-blue {
+    background-color: var(--brand-primary);
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 2px; 
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+    display: inline-block;
+}
+
+.btn-blue:hover {
+    background-color: var(--brand-primary-hover);
+    color: #ffffff;
+}
+
+/* --- Dashboard --- */
+.generate-box {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    padding: 40px;
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto 50px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+}
+
+.generate-box h3 {
+    margin: 0;
+    font-size: 22px;
+    color: var(--text-main);
+    font-weight: bold;
+}
+
+.recent-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; 
+}
+
+.recent-item {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--brand-primary); 
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 2px;
+    transition: background-color 0.2s ease;
+}
+
+.recent-item:hover {
+    background-color: #f2f9fd; 
+}
+
+.download-icon {
+    color: var(--brand-primary);
+    font-size: 20px;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+}
+
+.download-icon:hover {
+    color: var(--brand-accent); 
+}
+
+.search-bar {
+    margin-bottom: 30px;
+    display: flex;
+    gap: 10px;
+}
+
+.search-bar input {
+    padding: 12px 15px;
+    width: 350px;
+    border-radius: 2px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-surface);
+    color: var(--text-main);
+    font-size: 15px;
+}
+
+.search-bar input:focus {
+    outline: none;
+    border-color: var(--brand-primary);
+}
+
+.jugendliche-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.jugendliche-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-top: 4px solid var(--brand-primary); 
+    padding: 25px;
+    border-radius: 2px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--text-main);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+}
+
+.jugendliche-card h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.jugendliche-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+
+.fall-list {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.fall-item {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    padding: 15px 25px;
+    border-radius: 2px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

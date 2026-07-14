@@ -25,6 +25,8 @@ class Bezugsperson(Person):
         User,
         on_delete=models.CASCADE,
         related_name="bezugsperson",
+        null=True,  
+        blank=True, 
     )
 
     email = models.EmailField()

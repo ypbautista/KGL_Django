@@ -1,0 +1,20 @@
+{% extends 'betreuer_portal/base.html' %}
+
+{% block content %}
+<h2>Jugendliche Personen</h2>
+
+<form class="search-bar" method="GET" action="{% url 'betreuer_portal:jugendliche_list' %}">
+    <input type="text" name="q" placeholder="Name suchen..." value="{{ suchbegriff }}">
+    <button type="submit" class="btn-blue">Suchen</button>
+</form>
+
+<div class="jugendliche-grid">
+    {% for jp in jugendliche %}
+    <a href="{% url 'betreuer_portal:jugendliche_detail' jp.id %}" class="jugendliche-card">
+        <h3>{{ jp.vorname }} {{ jp.nachname }}</h3>
+    </a>
+    {% empty %}
+    <p>Keine Jugendlichen gefunden.</p>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'betreuer_portal/base.html' %}
+
+{% block content %}
+<h2>{{ jugendliche_person.vorname }} {{ jugendliche_person.nachname }}</h2>
+<a href="{% url 'betreuer_portal:jugendliche_list' %}" style="color: var(--brand-primary); text-decoration: none; font-weight: bold;">← Zurück zur Übersicht</a>
+
+<div class="fall-list">
+    <h3>Vergangene Fragebögen</h3>
+    {% for fall in faelle %}
+    <div class="fall-item">
+        <span>{{ fall.fragebogen.titel }} (Erstellt am: {{ fall.erstellt_am|date:"d.m.Y" }})</span>
+        <a href="{% url 'export_pdf' fall.id %}" class="btn-blue">PDF Auswertung ansehen</a>
+    </div>
+    {% empty %}
+    <p>Es liegen noch keine Fragebögen für diese Person vor.</p>
+    {% endfor %}
+</div>
+{% endblock %}

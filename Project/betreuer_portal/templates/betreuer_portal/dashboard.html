@@ -1,0 +1,22 @@
+{% extends 'betreuer_portal/base.html' %}
+
+{% block content %}
+<div class="generate-box">
+    <h3>Neuer Fragebogen Starten</h3>
+    <a href="{% url 'betreuer_portal:generate_link' %}" class="btn-blue">Link generieren</a>
+</div>
+
+<div class="recent-list">
+    {% for antwort in letzte_antworten %}
+    <div class="recent-item">
+        <span>
+            Fragebogen vom {{ antwort.start_time|date:"d.m.Y" }} 
+            ({{ antwort.einladung.fall.jugendliche_person.vorname }} {{ antwort.einladung.fall.jugendliche_person.nachname }})
+        </span>
+        <a href="{% url 'export_pdf' antwort.einladung.fall.id %}" class="download-icon">&#x1F4E5;&#xFE0E;</a>
+    </div>
+    {% empty %}
+    <p>Noch keine Fragebögen ausgefüllt.</p>
+    {% endfor %}
+</div>
+{% endblock %}

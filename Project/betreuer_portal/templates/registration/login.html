@@ -1,0 +1,33 @@
+{% extends "betreuer_portal/base.html" %}
+
+{% block title %}Anmeldung - KGL Betreuer Portal{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="generate-box login-box">
+        <h3>Portal Anmeldung</h3>
+        
+        {% if form.errors %}
+            <div class="error-message">
+                Ihr Benutzername und Passwort stimmen nicht überein. Bitte versuchen Sie es erneut.
+            </div>
+        {% endif %}
+
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="id_username">Benutzername</label>
+                <input type="text" name="username" autofocus required id="id_username" placeholder="Benutzername eingeben">
+            </div>
+            
+            <div class="form-group">
+                <label for="id_password">Passwort</label>
+                <input type="password" name="password" required id="id_password" placeholder="••••••••">
+            </div>
+
+            <button type="submit" class="btn-blue login-btn">Einloggen</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

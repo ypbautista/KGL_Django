@@ -215,3 +215,90 @@ main {
     justify-content: space-between;
     align-items: center;
 }
+
+/* --- Login Layout --- */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+}
+
+.login-box {
+    align-items: stretch; 
+    text-align: left;
+}
+
+.login-box h3 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--text-muted);
+}
+
+.form-group input {
+    padding: 12px 15px;
+    border-radius: 2px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-surface);
+    color: var(--text-main);
+    font-size: 15px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--brand-primary);
+}
+
+.login-btn {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+    margin-top: 10px;
+}
+
+.error-message {
+    background-color: #fdf2f2;
+    border-left: 4px solid var(--brand-accent);
+    color: #b91c1c;
+    padding: 12px 15px;
+    font-size: 14px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+}
+
+/* --- Logout Button --- */
+.btn-logout {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 6px 12px;
+    margin-left: 15px;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+
+}
+
+.btn-logout:hover {
+    color: var(--brand-accent);
+    border-color: var(--brand-accent);
+    background-color: #fff0f5;
+}

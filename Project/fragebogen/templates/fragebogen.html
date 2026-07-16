@@ -1,47 +1,71 @@
-<h1>{{ fragebogen.titel }}</h1>
+{% load static %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ fragebogen.titel }} | Abschnitt {{ abschnitt_nr }}</title>
+    
+    <!-- 1. Globale Styles & Variablen aus dem Portal laden -->
+    <link rel="stylesheet" href="{% static 'betreuer_portal/css/portal.css' %}">
+    
+    <!-- 2. Spezifische Styles für diese App laden -->
+    <link rel="stylesheet" href="{% static 'fragebogen/css/fragebogen.css' %}">
+</head>
+<body>
 
-<h2>
-    {{ abschnitt.titel }}
-</h2>
+    <div class="fragebogen-container">
+        
+        <!-- Header-Bereich -->
+        <header class="fragebogen-header">
+            <h1>{{ fragebogen.titel }}</h1>
+            <h2>{{ abschnitt.titel }}</h2>
+            <p class="progress-text">
+                Abschnitt <strong>{{ abschnitt_nr }}</strong> von {{ gesamt_abschnitte }}
+            </p>
+        </header>
 
-<p>
-    Abschnitt {{ abschnitt_nr }} von {{ gesamt_abschnitte }}
-</p>
+        <!-- Formular -->
+        <form method="post" class="fragebogen-form">
+            {% csrf_token %}
 
+            <div class="questions-list">
+                {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                        </label>
+                        {{ field }}
+                        
+                        <!-- Eventuelle Validierungsfehler direkt anzeigen -->
+                        {% if field.errors %}
+                            <div class="field-errors">
+                                {{ field.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
 
-<form method="post">
+            <!-- Buttons für Navigation -->
+            <div class="form-navigation">
+                {% if abschnitt_nr > 1 %}
+                    <button type="submit" name="action" value="back" class="btn-secondary">
+                        Zurück
+                    </button>
+                {% endif %}
 
-    {% csrf_token %}
+                <button type="submit" name="action" value="next" class="btn-blue">
+                    {% if abschnitt_nr == gesamt_abschnitte %}
+                        Abschliessen
+                    {% else %}
+                        Weiter
+                    {% endif %}
+                </button>
+            </div>
 
-    {% for field in form %}
-
-    <div style="margin-bottom:20px;">
-
-        <label>
-            {{ field.label }}
-        </label>
-
-        <br>
-
-        {{ field }}
-
+        </form>
     </div>
 
-    {% endfor %}
-
-
-    {% if abschnitt_nr > 1 %}
-    <button type="submit" name="action" value="back">
-        Zurück
-    </button>
-    {% endif %}
-
-    <button type="submit" name="action" value="next">
-        {% if abschnitt_nr == gesamt_abschnitte %}
-        Abschliessen
-        {% else %}
-        Weiter
-        {% endif %}
-    </button>
-
-</form>
+</body>
+</html>

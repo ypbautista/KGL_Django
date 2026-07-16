@@ -1,5 +1,56 @@
-<h1>{{ fragebogen.titel }}</h1>
+{% load static %}
+<!DOCTYPE html>
+<html lang="de">
 
-<a href="{% url 'abschnitt_ausfuellen' code=einladung.code abschnitt_nr=1 %}">
-    Fragebogen starten
-</a>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ einladung.fall.fragebogen.titel }} | Start</title>
+    <link rel="stylesheet" href="{% static 'betreuer_portal/css/portal.css' %}">
+</head>
+
+<body>
+
+    <div class="login-container">
+        <div class="start-card">
+
+            <!-- Badge für den Fragebogen-Typ -->
+            <div class="meta-badge">
+                {{ einladung.fall.fragebogen.titel }}
+            </div>
+
+            <!-- Dynamische Begrüssung -->
+            {% if einladung.bezugsperson %}
+            <h2>Fremdeinschätzung starten</h2>
+            <div class="info-text">
+                <p>Hallo <strong>{{ einladung.bezugsperson.vorname }} {{ einladung.bezugsperson.nachname }}</strong>,
+                </p>
+                <p>Sie füllen diesen Fragebogen als Fremdeinschätzung für <strong>
+                        {{ einladung.fall.jugendliche_person.vorname }}</strong> aus.</p>
+                <p>Ihre Antworten werden vertraulich behandelt und direkt für die PDF-Auswertung verarbeitet. Bitte
+                    nehmen Sie sich einen Moment Zeit.</p>
+            </div>
+            {% else %}
+            <h2>Selbsteinschätzung starten</h2>
+            <div class="info-text">
+                <p>Hallo <strong>{{ einladung.fall.jugendliche_person.vorname }}</strong>,</p>
+                <p>schön, dass du da bist! Auf den folgenden Seiten wirst du gebeten, ein paar Fragen zu beantworten.
+                </p>
+                <p>Es gibt keine richtigen oder falschen Antworten – wichtig ist deine persönliche und ehrliche
+                    Einschätzung. Lass uns direkt loslegen!</p>
+            </div>
+            {% endif %}
+
+            <!-- Action Button -->
+            <div class="start-btn-wrapper">
+                <a href="{% url 'abschnitt_ausfuellen' einladung.code 1 %}" class="btn-blue btn-full">
+                    Jetzt starten
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

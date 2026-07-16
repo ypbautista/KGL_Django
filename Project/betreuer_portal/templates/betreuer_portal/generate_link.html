@@ -1,0 +1,73 @@
+{% extends 'betreuer_portal/base.html' %}
+
+{% block content %}
+<div class="generator-container">
+    
+    <!-- Zurück zum Dashboard -->
+    <a href="{% url 'betreuer_portal:dashboard' %}" class="back-link">← Zurück zum Dashboard</a>
+    
+    <h1 class="page-title">Fragebogen starten & Links verwalten</h1>
+
+    <!-- 1. ERFOLGS-BOX: ZEIGT GENERIERTE LINKS -->
+    {% if jugendliche_link and betreuer_link %}
+        <div class="success-container">
+            <h3 class="success-header">
+                <span class="success-icon-check">✔</span> Fall erfolgreich vorbereitet
+            </h3>
+            
+            <!-- Link 1: Selbsteinschätzung -->
+            <div class="link-box">
+                <h4>1. Selbsteinschätzung (Für {{ selected_jp.vorname }} {{ selected_jp.nachname }})</h4>
+                <p>Kopieren Sie diesen Link und senden Sie ihn an die jugendliche Person:</p>
+                
+                <div class="copy-group">
+                    <input type="text" id="youthLinkInput" value="{{ jugendliche_link }}" readonly class="copy-input">
+                    <button onclick="copyYouthLink()" class="btn-copy">Link kopieren</button>
+                </div>
+            </div>
+
+            <!-- Link 2: Fremdeinschätzung -->
+            <div class="link-box">
+                <h4>2. Fremdeinschätzung (Für Sie als Bezugsperson)</h4>
+                <p>Sie können Ihre eigene Einschätzung für diesen Fall direkt hier starten:</p>
+                <a href="{{ betreuer_link }}" class="btn-fill-out">Jetzt Fremdeinschätzung ausfüllen →</a>
+            </div>
+        </div>
+
+        <script>
+            function copyYouthLink() {
+                var copyText = document.getElementById("youthLinkInput");
+                copyText.select();
+                copyText.setSelectionRange(0, 99999);
+                navigator.clipboard.writeText(copyText.value);
+                alert("Link für die jugendliche Person in die Zwischenablage kopiert!");
+            }
+        </script>
+    {% endif %}
+
+    <!-- 2. DAS FORMULAR (DIE GENERATOR CARD) -->
+    <div class="generator-card">
+        <h3>Neuen Fall anlegen</h3>
+        <form method="post">
+            {% csrf_token %}
+            
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="field-errors">
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+            <button type="submit" class="btn-submit">
+                Links für Selbst- und Fremdeinschätzung generieren
+            </button>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

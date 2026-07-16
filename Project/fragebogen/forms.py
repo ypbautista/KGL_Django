@@ -79,24 +79,22 @@ class AbschnittForm(forms.Form):
 
 
 
-            self.fields[
-                f"frage_{frage.id}"
-            ] = forms.IntegerField(
-
+            self.fields[f"frage_{frage.id}"] = forms.TypedChoiceField(
                 label=frage.frage_vorlage.text,
-
-                min_value=1,
-
-                max_value=7,
-
+                coerce=int,
+                choices=[
+                    (1, "überragend"),
+                    (2, "immer"),
+                    (3, "meistens"),
+                    (4, "oft"),
+                    (5, "manchmal"),
+                    (6, "selten"),
+                    (7, "nie"),
+                ],
                 initial=initial,
-
-                widget=forms.NumberInput(
+                widget=forms.RadioSelect(
                     attrs={
-                        "type": "range",
-                        "min": 1,
-                        "max": 7,
-                        "step": 1,
+                        "class": "likert-radio-group"
                     }
                 )
             )

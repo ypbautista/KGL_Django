@@ -1,13 +1,37 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-    <title>Completed</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erfolgreich abgeschlossen</title>
+    
+    <!-- 1. Globale Styles & Variablen aus dem Portal laden -->
+    <link rel="stylesheet" href="{% static 'betreuer_portal/css/portal.css' %}">
+    
+    <!-- 2. Spezifische Styles für diese App laden -->
+    <link rel="stylesheet" href="{% static 'fragebogen/css/fragebogen.css' %}">
 </head>
 <body>
 
-<h1>Vielen Dank!</h1>
+    <div class="login-container">
+        <div class="success-card">
+            
+            <!-- Grünes Erfolgs-Icon -->
+            <div class="success-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
 
-<p>Der Fragebogen wurde erfolgreich abgeschlossen.</p>
+            <h1>Vielen Dank!</h1>
+            
+            <p class="success-text">
+                Der Fragebogen wurde erfolgreich abgeschlossen. Deine Antworten wurden sicher gespeichert.
+            </p>
+
+        </div>
+    </div>
 
 </body>
 </html>

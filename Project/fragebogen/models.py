@@ -1,6 +1,5 @@
-from django.db import models
 import uuid
-
+from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -51,53 +50,34 @@ class Fragebogen(models.Model):
 
 
 class FragebogenFall(models.Model):
-
     jugendliche_person = models.ForeignKey(
         JugendlichePerson,
         on_delete=models.CASCADE,
         related_name="faelle",
     )
-
     fragebogen = models.ForeignKey(
         Fragebogen,
         on_delete=models.CASCADE,
     )
-
     erstellt_am = models.DateTimeField(
         auto_now_add=True
     )
 
     class Meta:
-
-        constraints = [
-            models.UniqueConstraint(
-                fields=[
-                    "jugendliche_person",
-                    "fragebogen",
-                ],
-                name="unique_questionnaire_case",
-            )
-        ]
+        ordering = ["-erstellt_am"]
 
     def __str__(self):
-        return (
-            f"{self.jugendliche_person} - "
-            f"{self.fragebogen}"
-        )
+        return f"{self.jugendliche_person} - {self.fragebogen}"
 
     def selbsteinschaetzung(self):
-
         return self.einladungen.filter(
             bezugsperson__isnull=True
         ).first()
 
-
     def fremdeinschaetzung(self):
-
         return self.einladungen.filter(
             bezugsperson__isnull=False
         ).first()
-
 
 
 class Einladung(models.Model):
@@ -125,14 +105,10 @@ class Einladung(models.Model):
         on_delete=models.CASCADE,
     )
 
-
     def __str__(self):
-
         if self.bezugsperson:
             return "Fremdeinschätzung"
-
         return "Selbsteinschätzung"
-
 
 
 class FragebogenAntwort(models.Model):
@@ -152,19 +128,13 @@ class FragebogenAntwort(models.Model):
         blank=True,
     )
 
-
     def __str__(self):
-
         if self.einladung.bezugsperson:
             typ = "Fremdeinschätzung"
         else:
             typ = "Selbsteinschätzung"
 
-        return (
-            f"{typ} - "
-            f"{self.einladung.fall.jugendliche_person}"
-        )
-
+        return f"{typ} - {self.einladung.fall.jugendliche_person}"
 
 
 class FragebogenAbschnitt(models.Model):
@@ -181,9 +151,7 @@ class FragebogenAbschnitt(models.Model):
 
     reihenfolge = models.PositiveIntegerField()
 
-
     class Meta:
-
         constraints = [
             models.UniqueConstraint(
                 fields=[
@@ -194,6 +162,8 @@ class FragebogenAbschnitt(models.Model):
             )
         ]
 
+    def __str__(self):
+        return f"{self.fragebogen.titel} | Abschnitt: {self.titel}"
 
 
 class FrageVorlage(models.Model):
@@ -201,6 +171,9 @@ class FrageVorlage(models.Model):
     text = models.TextField(
         max_length=500
     )
+
+    def __str__(self):
+        return self.text[:50] + "..." if len(self.text) > 50 else self.text
 
 
 class AbschnittFrage(models.Model):
@@ -226,7 +199,6 @@ class AbschnittFrage(models.Model):
         )
 
 
-
 class AbschnittAntwort(models.Model):
 
     fragebogen_antwort = models.ForeignKey(
@@ -244,6 +216,8 @@ class AbschnittAntwort(models.Model):
         blank=True
     )
 
+    def __str__(self):
+        return f"{self.fragebogen_antwort} -> {self.fragebogen_abschnitt.titel}"
 
 
 class FrageAntwort(models.Model):

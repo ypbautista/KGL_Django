@@ -1,22 +1,89 @@
 {% extends 'betreuer_portal/base.html' %}
 
 {% block content %}
-<div class="generate-box">
+<!-- 1. Willkommens-Header -->
+<h2>Willkommen zurück, {{ betreuer.vorname }} {{ betreuer.nachname }}</h2>
+
+<!-- 2. "Link generieren"-Box -->
+<div class="generate-box" style="margin-top: 20px; margin-bottom: 30px;">
     <h3>Neuer Fragebogen Starten</h3>
     <a href="{% url 'betreuer_portal:generate_link' %}" class="btn-blue">Link generieren</a>
 </div>
 
-<div class="recent-list">
-    {% for antwort in letzte_antworten %}
-    <div class="recent-item">
-        <span>
-            Fragebogen vom {{ antwort.start_time|date:"d.m.Y" }} 
-            ({{ antwort.einladung.fall.jugendliche_person.vorname }} {{ antwort.einladung.fall.jugendliche_person.nachname }})
-        </span>
-        <a href="{% url 'export_pdf' antwort.einladung.fall.id %}" class="download-icon">&#x1F4E5;&#xFE0E;</a>
+<!-- 3. Aktuelle Fälle & Fortschritt (Grid der Jugendlichen) -->
+<div style="margin-top: 30px; margin-bottom: 40px;">
+    <h3>Aktuelle Fälle & Fortschritt</h3>
+
+    <div style="display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); margin-top: 15px;">
+        {% for fall in aktive_faelle %}
+        <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <h4 style="margin: 0 0 15px 0; color: #2c3e50;">
+                {{ fall.jugendliche_person.vorname }} {{ fall.jugendliche_person.nachname }}
+            </h4>
+            <p style="font-size: 0.85em; color: #7f8c8d; margin-bottom: 15px;">
+                Bogen: {{ fall.fragebogen.titel }}
+            </p>
+
+            <!-- Status Sektion -->
+            <div style="background: #fcfcfc; padding: 10px; border-radius: 4px; margin-bottom: 20px; font-size: 0.9em;">
+                <!-- Selbsteinschätzung des Jugendlichen -->
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>Selbsteinschätzung:</span>
+                    {% if fall.selbsteinschaetzung.benutzt %}
+                    <span style="color: #27ae60; font-weight: bold;">✔ Ausgefüllt</span>
+                    {% else %}
+                    <span style="color: #f39c12;">⏳ Offen</span>
+                    {% endif %}
+                </div>
+
+                <!-- Fremdeinschätzung des Betreuers -->
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Deine Einschätzung:</span>
+                    {% if fall.fremdeinschaetzung.benutzt %}
+                    <span style="color: #27ae60; font-weight: bold;">✔ Ausgefüllt</span>
+                    {% else %}
+                    <span style="color: #f39c12;">⏳ Offen</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Dynamischer Action-Button -->
+            <div style="display: flex; gap: 10px;">
+                {% if fall.selbsteinschaetzung.benutzt or fall.fremdeinschaetzung.benutzt %}
+                <a href="{% url 'export_pdf' fall.id %}" target="_blank" class="btn-blue"
+                    style="text-decoration: none; text-align: center; flex-grow: 1; font-size: 0.9em; padding: 8px;">
+                    PDF Auswertung
+                </a>
+                {% else %}
+                <button disabled
+                    style="background: #e0e0e0; color: #95a5a6; border: none; padding: 8px; border-radius: 4px; flex-grow: 1; cursor: not-allowed; font-size: 0.9em;">
+                    Noch keine Daten
+                </button>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <p>Aktuell keine aktiven Fälle vorhanden.</p>
+        {% endfor %}
     </div>
-    {% empty %}
-    <p>Noch keine Fragebögen ausgefüllt.</p>
-    {% endfor %}
+</div>
+
+<!-- 4. Kürzlich ausgefüllte Fragebögen (Recent List) -->
+<div class="recent-list-section" style="margin-top: 30px; margin-bottom: 30px;">
+    <h3>Kürzlich ausgefüllte Fragebögen</h3>
+    
+    <div class="recent-list">
+        {% for antwort in letzte_antworten %}
+        <div class="recent-item">
+            <span>
+                Fragebogen vom {{ antwort.start_time|date:"d.m.Y" }} 
+                ({{ antwort.einladung.fall.jugendliche_person.vorname }} {{ antwort.einladung.fall.jugendliche_person.nachname }})
+            </span>
+            <a href="{% url 'export_pdf' antwort.einladung.fall.id %}" class="download-icon">&#x1F4E5;&#xFE0E;</a>
+        </div>
+        {% empty %}
+        <p>Noch keine Fragebögen ausgefüllt.</p>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

@@ -18,7 +18,7 @@ def dashboard(request):
     
     faelle_des_betreuers = FragebogenFall.objects.filter(
         einladungen__bezugsperson=betreuer
-    ).distinct()
+    ).prefetch_related('einladungen').distinct()
 
     fall_ids = list(faelle_des_betreuers.values_list('id', flat=True))
 

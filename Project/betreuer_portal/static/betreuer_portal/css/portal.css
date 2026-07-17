@@ -1,7 +1,6 @@
 /* betreuer_portal/static/betreuer_portal/css/portal.css */
 
 :root {
-
     --brand-primary: #009de0;    
     --brand-primary-hover: #007bb5; 
     
@@ -69,13 +68,12 @@ main {
     padding: 0 20px 40px 20px;
 }
 
-
 .btn-blue {
     background-color: var(--brand-primary);
     color: #ffffff;
     border: none;
     padding: 12px 24px;
-    border-radius: 2px; 
+    border-radius: 4px; 
     font-size: 15px;
     font-weight: bold;
     cursor: pointer;
@@ -89,21 +87,23 @@ main {
     color: #ffffff;
 }
 
-/* --- Dashboard --- */
+/* --- Dashboard Elements & Containers --- */
 .generate-box {
     background-color: var(--bg-surface);
     border: 1px solid var(--border-color);
-    border-radius: 2px;
-    padding: 40px;
+    border-top: 4px solid var(--brand-primary); 
+    border-radius: 6px;
+    padding: 35px;
     width: 100%;
     max-width: 450px;
-    margin: 0 auto 50px auto;
+    margin: 20px auto 30px auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 15px;
     box-shadow: var(--shadow-sm);
     text-align: center;
+    box-sizing: border-box;
 }
 
 .generate-box h3 {
@@ -127,7 +127,7 @@ main {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-radius: 2px;
+    border-radius: 4px;
     transition: background-color 0.2s ease;
 }
 
@@ -140,7 +140,7 @@ main {
     font-size: 20px;
     text-decoration: none;
     padding: 6px 12px;
-    border-radius: 2px;
+    border-radius: 4px;
     transition: all 0.2s ease;
 }
 
@@ -157,7 +157,7 @@ main {
 .search-bar input {
     padding: 12px 15px;
     width: 350px;
-    border-radius: 2px;
+    border-radius: 4px;
     border: 1px solid var(--border-color);
     background-color: var(--bg-surface);
     color: var(--text-main);
@@ -180,12 +180,13 @@ main {
     border: 1px solid var(--border-color);
     border-top: 4px solid var(--brand-primary); 
     padding: 25px;
-    border-radius: 2px;
+    border-radius: 6px;
     text-align: center;
     text-decoration: none;
     color: var(--text-main);
     box-shadow: var(--shadow-sm);
     transition: all 0.2s ease;
+    box-sizing: border-box;
 }
 
 .jugendliche-card h3 {
@@ -198,7 +199,6 @@ main {
     transform: translateY(-2px);
 }
 
-
 .fall-list {
     margin-top: 30px;
     display: flex;
@@ -210,7 +210,7 @@ main {
     background-color: var(--bg-surface);
     border: 1px solid var(--border-color);
     padding: 15px 25px;
-    border-radius: 2px;
+    border-radius: 4px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -251,7 +251,7 @@ main {
 
 .form-group input {
     padding: 12px 15px;
-    border-radius: 2px;
+    border-radius: 4px;
     border: 1px solid var(--border-color);
     background-color: var(--bg-surface);
     color: var(--text-main);
@@ -278,7 +278,7 @@ main {
     color: #b91c1c;
     padding: 12px 15px;
     font-size: 14px;
-    border-radius: 2px;
+    border-radius: 4px;
     margin-bottom: 20px;
 }
 
@@ -292,9 +292,8 @@ main {
     cursor: pointer;
     padding: 6px 12px;
     margin-left: 15px;
-    border-radius: 2px;
+    border-radius: 4px;
     transition: all 0.2s ease;
-
 }
 
 .btn-logout:hover {
@@ -304,7 +303,7 @@ main {
 }
 
 /* ==========================================================================
-   LINK-GENERATOR SEITE (BETREUER PORTAL)
+    LINK-GENERATOR SEITE
    ========================================================================== */
 
 .generator-container {
@@ -346,7 +345,7 @@ main {
     border-top: 4px solid var(--brand-primary, #0084ff);
     border-radius: 6px;
     padding: 35px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    box-shadow: var(--shadow-sm);
     box-sizing: border-box;
 }
 
@@ -372,7 +371,6 @@ main {
     text-align: left;
 }
 
-/* Modernisierte Dropdowns ohne hässliche Browser-Pfeile */
 .generator-card .form-group select {
     padding: 12px 16px;
     border: 1px solid var(--border-color, #cbd5e1);
@@ -430,7 +428,7 @@ main {
     background-color: #f0f9ff;
     border: 1px solid #b9e6fe;
     padding: 25px;
-    border-radius: 8px;
+    border-radius: 6px;
     margin-bottom: 30px;
     box-sizing: border-box;
 }
@@ -525,4 +523,150 @@ main {
 
 .btn-fill-out:hover {
     background-color: #059669;
+}
+
+.section-container {
+    margin-top: 30px;
+    margin-bottom: 40px;
+}
+
+/* Karten-Grid */
+.case-grid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    margin-top: 15px;
+}
+
+/* Einzelne Fall-Karte */
+.case-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-top: 4px solid var(--brand-primary); 
+    border-radius: 6px;
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.case-card h4 {
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+    font-size: 1.15em;
+}
+
+.case-card .card-subtitle {
+    font-size: 0.85em;
+    color: #7f8c8d;
+    margin-bottom: 15px;
+}
+
+/* Die Status-Sektion */
+.status-grid-box {
+    display: grid;
+    grid-template-columns: auto 1fr 28px;
+    align-items: center;
+    row-gap: 10px;
+    column-gap: 8px;
+    background: #fcfcfc;
+    padding: 10px 12px; 
+    border-radius: 6px;
+    margin-bottom: 20px;
+    border: 1px solid #eaeaea;
+}
+
+.status-label {
+    white-space: nowrap;
+    font-size: 0.88em; 
+    color: #2c3e50;
+}
+
+.status-text {
+    font-weight: 500;
+    white-space: nowrap;
+    font-size: 0.88em;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.status-text.status-open {
+    color: #f39c12;
+}
+
+.status-text.status-completed {
+    color: #27ae60;
+}
+
+/* Fester Platzhalter für die Aktions-Buttons */
+.button-slot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 28px;
+    height: 28px;
+}
+
+/* Kleine Aktionsknöpfe (Kopieren / Bearbeiten) */
+.btn-emoji-replacement {
+    box-sizing: border-box;
+    margin: 0;
+    background: #ffffff;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #495057;
+    padding: 0;
+    transition: all 0.15s ease;
+    vertical-align: middle;
+    text-decoration: none;
+    line-height: 1;
+}
+
+.btn-emoji-replacement.copy:hover {
+    border-color: #0091ff;
+    color: #0091ff;
+    background: #f8f9fa;
+}
+
+.btn-emoji-replacement.edit:hover {
+    border-color: #27ae60;
+    color: #27ae60;
+    background: #f8f9fa;
+}
+
+/* Unterer Bereich der Karte / Buttons */
+.card-footer {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.btn-blue-stretched {
+    text-decoration: none;
+    text-align: center;
+    flex-grow: 1;
+    font-size: 0.9em;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.btn-disabled {
+    background: #e0e0e0;
+    color: #95a5a6;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    flex-grow: 1;
+    cursor: not-allowed;
+    font-size: 0.9em;
+    font-weight: 500;
 }

@@ -22,3 +22,6 @@ staticfiles/
 # Betriebssystem-spezifisch
 .DS_Store
 Thumbs.db
+
+#zusatz
+seed.py

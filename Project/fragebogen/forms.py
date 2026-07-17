@@ -6,7 +6,6 @@ from .models import (
 )
 
 
-
 class AbschnittForm(forms.Form):
 
     kommentar = forms.CharField(
@@ -18,7 +17,6 @@ class AbschnittForm(forms.Form):
             }
         )
     )
-
 
     def __init__(
         self,
@@ -33,13 +31,10 @@ class AbschnittForm(forms.Form):
             **kwargs
         )
 
-
         if abschnitt_antwort:
-
             self.fields["kommentar"].initial = (
                 abschnitt_antwort.kommentar
             )
-
 
         self.fragen = (
             AbschnittFrage.objects
@@ -54,12 +49,9 @@ class AbschnittForm(forms.Form):
             )
         )
 
-
         for frage in self.fragen:
 
-
             initial = None
-
 
             if abschnitt_antwort:
 
@@ -72,12 +64,8 @@ class AbschnittForm(forms.Form):
                     .first()
                 )
 
-
                 if antwort:
-
                     initial = antwort.antwort_wert
-
-
 
             self.fields[f"frage_{frage.id}"] = forms.TypedChoiceField(
                 label=frage.frage_vorlage.text,
@@ -98,3 +86,19 @@ class AbschnittForm(forms.Form):
                     }
                 )
             )
+
+        kommentar_field = self.fields.pop("kommentar", None)
+
+        first_frage_key = f"frage_{self.fragen[0].id}" if self.fragen.exists() else None
+
+        new_fields = {}
+        for key, value in self.fields.items():
+            new_fields[key] = value
+            if key == first_frage_key and kommentar_field:
+                new_fields["kommentar"] = kommentar_field
+                kommentar_field = None
+
+        if kommentar_field:
+            new_fields["kommentar"] = kommentar_field
+
+        self.fields = new_fields

@@ -298,94 +298,56 @@ def export_fragebogen_pdf(request, fall_id):
     fremd_values = []
 
 
-    for abschnitt in abschnitte:
+    for eintrag in vergleich:
+        
+        achsen_label = eintrag["abschnitt"] 
+        categories.append(achsen_label)
+        
 
-        categories.append(
-            abschnitt.titel
-        )
-
-
-        selbst_scores = []
-        fremd_scores = []
-
-
-        for eintrag in vergleich:
-
-            if eintrag["abschnitt"] == abschnitt.titel:
-
-                if eintrag["selbst"] is not None:
-                    selbst_scores.append(
-                        eintrag["selbst"]
-                    )
-
-                if eintrag["fremd"] is not None:
-                    fremd_scores.append(
-                        eintrag["fremd"]
-                    )
-
-
-        selbst_values.append(
-            sum(selbst_scores) / len(selbst_scores)
-            if selbst_scores
-            else 0
-        )
-
-
-        fremd_values.append(
-            sum(fremd_scores) / len(fremd_scores)
-            if fremd_scores
-            else 0
-        )
+        selbst_values.append(eintrag["selbst"] if eintrag["selbst"] is not None else 0)
+        fremd_values.append(eintrag["fremd"] if eintrag["fremd"] is not None else 0)
 
 
 
     buffer = io.BytesIO()
-
-
-    fig = plt.figure(
-        figsize=(8,8)
-    )
-
+    
+    fig = plt.figure(figsize=(8,8))
 
     if categories:
-
         count = len(categories)
-
-
-        angles = [
-            n / count * 2 * np.pi
-            for n in range(count)
-        ]
-
+        angles = [n / count * 2 * np.pi for n in range(count)]
         angles += angles[:1]
 
-
-        ax = plt.subplot(
-            111,
-            polar=True
-        )
+        ax = plt.subplot(111, polar=True)
+        ax.set_theta_offset(np.pi / 2)
+        ax.set_theta_direction(-1)
 
 
-        ax.set_theta_offset(
-            np.pi / 2
-        )
-
-        ax.set_theta_direction(
-            -1
-        )
+        pastell_farben = ['#d6eaf8', '#fcf3cf', '#fadbd8', '#d4efdf', '#e8daef']
+        abschnitt_farben = {}
+        farb_index = 0
 
 
-        plt.xticks(
-            angles[:-1],
-            categories,
-            size=10
-        )
+        for i in range(count):
+            aktuellem_abschnitt = vergleich[i]["abschnitt"]
 
+            if aktuellem_abschnitt not in abschnitt_farben:
+                abschnitt_farben[aktuellem_abschnitt] = pastell_farben[farb_index % len(pastell_farben)]
+                farb_index += 1
 
-        plt.ylim(
-            0,
-            7
-        )
+            ax.bar(
+                angles[i],
+                7,                             
+                width=(2 * np.pi / count),     
+                color=abschnitt_farben[aktuellem_abschnitt],
+                alpha=0.6,                     
+                zorder=0,
+                align="center",                      
+            )
+        
+
+        plt.xticks(angles[:-1], categories, size=10)
+        plt.ylim(0, 7)
 
 
         if any(selbst_values):
@@ -394,7 +356,8 @@ def export_fragebogen_pdf(request, fall_id):
                 angles,
                 selbst_values + selbst_values[:1],
                 label="Selbsteinschätzung",
-                color="#3498db"
+                color="#3498db",
+                marker='o'
             )
 
 
@@ -404,11 +367,15 @@ def export_fragebogen_pdf(request, fall_id):
                 angles,
                 fremd_values + fremd_values[:1],
                 label="Fremdeinschätzung",
-                color="#e74c3c"
+                color="#e74c3c",
+                marker='s'
             )
 
 
-        plt.legend()
+        plt.legend(
+            loc="upper right",
+            bbox_to_anchor=(1.3, 1.1)
+        )
 
 
 

@@ -1,6 +1,6 @@
 ### EQUALS - KGL_Django
 
-Dieses Projekt ist ein KGL Projekt auf Basis von Django. Es dient zur Verwaltung der Datenauswertung von den Fragebögen.
+Dieses Projekt ist ein Webui Projekt auf Basis von Django. Es dient zur Verwaltung der Datenauswertung von den Fragebögen.
 
 ## Voraussetzungen
 
@@ -24,8 +24,8 @@ Befolge diese Schritte, um das Projekt lokal auf deinem Rechner einzurichten:
 Bash
 
 ```
-git clone https://github.com/DEIN-BENUTZERNAME/DEIN-REPO-NAME.git
-cd DEIN-REPO-NAME
+git clone https://github.com/ypbautista/KGL_Django
+cd KGL_Django
 ```
 
 ### 2. Virtuelle Umgebung erstellen
@@ -79,7 +79,8 @@ Da das Projekt PostgreSQL nutzt, muss der Datenbank-Server lokal gestartet und e
     Führe im interaktiven Prompt (`postgres=#`) folgende Befehle aus (ersetze `'dein_passwort'` mit dem Passwort aus deiner `settings.py`):
     
     SQL
-    
+
+    (Befehle einzeln eingeben!)
     ```
 	    CREATE USER kgl WITH PASSWORD 'dein_passwort' CREATEDB;
 	    CREATE DATABASE kgl_db OWNER kgl;
@@ -119,4 +120,5 @@ Bash
 python manage.py runserver
 ```
 
-Die Seite ist nun unter [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin) erreichbar.
+Die Seite ist nun unter [http://127.0.0.1:8000/admin] (http://127.0.0.1:8000/admin) oder [http://127.0.0.1:8000/portal/dashboard] (http://127.0.0.1:8000/portal/dashboard)  erreichbar.
+

@@ -54,7 +54,34 @@ Bash
 pip install -r requirements.txt
 ```
 
-### 5. PostgreSQL Datenbank aufsetzen
+### 5. Umgebungsvariablen (.env) einrichten
+
+Kopiere die Beispiel-Datei `.env.example`, um deine persönliche `.env`-Datei für lokale Einstellungen zu erstellen:
+
+```
+bash
+cp .env.example .env
+```
+
+Öffne die neu erstellte `.env`-Datei in deinem Code-Editor und trage dort dein gewähltes Datenbank-Passwort (`DB_PASSWORD`) und optional einen lokalen `SECRET_KEY`.
+
+
+
+Neuen SECRET_KEY generieren (optional für Lokal, erforderlich für Production)
+Um einen neuen, kryptografisch sicheren SECRET_KEY zu erzeugen, führe folgenden Befehl in deinem aktivierten Terminal aus:
+
+```
+Bash
+python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
+```
+Kopiere die generierte Zeichenkette und ersetze den Wert in deiner .env-Datei:
+
+Code-Snippet
+SECRET_KEY=dein_neu_generierter_schluessel
+
+> ⚠️ **Wichtig:** Die Datei `.env` enthält sensible Zugangsdaten und darf **niemals** in Git committet werden! Stelle sicher, dass `.env` in deiner `.gitignore`-Datei aufgeführt ist.
+
+### 6. PostgreSQL Datenbank aufsetzen
 
 Da das Projekt PostgreSQL nutzt, muss der Datenbank-Server lokal gestartet und eingerichtet werden:
 
@@ -91,7 +118,7 @@ Da das Projekt PostgreSQL nutzt, muss der Datenbank-Server lokal gestartet und e
     ```
     
 
-### 6. Datenbank-Migrationen ausführen
+### 7. Datenbank-Migrationen ausführen
 
 Erstelle die Tabellen für die Django-Core-Funktionen und die Fragebogen-App:
 
@@ -102,7 +129,7 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-### 7. Admin-Konto erstellen
+### 8. Admin-Konto erstellen
 
 Um auf das Django-Admin-Interface zuzugreifen, erstelle einen Superuser:
 
@@ -112,7 +139,7 @@ Bash
 python manage.py createsuperuser
 ```
 
-### 8. Server starten
+### 9. Server starten
 
 Bash
 

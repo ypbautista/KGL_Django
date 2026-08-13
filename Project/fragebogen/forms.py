@@ -5,6 +5,25 @@ from .models import (
     FrageAntwort,
 )
 
+CHOICES_FRAGEN = [
+    (1, "überragend"),
+    (2, "immer"),
+    (3, "meistens"),
+    (4, "oft"),
+    (5, "manchmal"),
+    (6, "selten"),
+    (7, "nie"),
+]
+
+CHOICES_MOTIVATION = [
+    (1, "extrem hoch"),
+    (2, "hoch"),
+    (3, "eher hoch"),
+    (4, "mittel"),
+    (5, "eher niedrig"),
+    (6, "niedrig"),
+    (7, "null Bock"),
+]
 
 class AbschnittForm(forms.Form):
 
@@ -49,7 +68,7 @@ class AbschnittForm(forms.Form):
             )
         )
 
-        for frage in self.fragen:
+        for index, frage in enumerate(self.fragen):
 
             initial = None
 
@@ -66,19 +85,12 @@ class AbschnittForm(forms.Form):
 
                 if antwort:
                     initial = antwort.antwort_wert
+            choices = CHOICES_MOTIVATION if index == 1 else CHOICES_FRAGEN
 
             self.fields[f"frage_{frage.id}"] = forms.TypedChoiceField(
                 label=frage.frage_vorlage.text,
                 coerce=int,
-                choices=[
-                    (1, "überragend"),
-                    (2, "immer"),
-                    (3, "meistens"),
-                    (4, "oft"),
-                    (5, "manchmal"),
-                    (6, "selten"),
-                    (7, "nie"),
-                ],
+                choices=choices,
                 initial=initial,
                 widget=forms.RadioSelect(
                     attrs={
@@ -86,6 +98,8 @@ class AbschnittForm(forms.Form):
                     }
                 )
             )
+
+
 
         kommentar_field = self.fields.pop("kommentar", None)
 

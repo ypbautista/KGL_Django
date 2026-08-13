@@ -1,4 +1,4 @@
-/* --- Fragebogen Startseite / Generierungs-Karte --- */
+
 .start-card {
     background-color: var(--bg-surface);
     border: 1px solid var(--border-color);
@@ -39,7 +39,7 @@
     margin-bottom: 20px;
 }
 
-/* Zurück-Link über der Karte */
+
 .back-link {
     display: inline-block;
     color: var(--brand-primary);
@@ -60,7 +60,6 @@
     margin-top: 10px;
 }
 
-/* Der perfekt gestylte blaue Button */
 .btn-blue {
     background-color: var(--brand-primary);
     color: #ffffff;
@@ -88,7 +87,7 @@
     font-size: 16px;
 }
 
-/* --- Fragebogen Ausfüllseite & Formularfelder --- */
+
 .fragebogen-container {
     max-width: 650px;
     margin: 60px auto;
@@ -120,7 +119,7 @@
     margin: 0;
 }
 
-/* Frage-Blöcke */
+
 .form-group {
     margin-bottom: 25px;
     display: flex;
@@ -135,7 +134,7 @@
     font-size: 15px;
 }
 
-/* Textfelder, Dropdowns und Textareas global & sicher stylen */
+
 .form-group input:not([type="radio"]):not([type="checkbox"]), 
 .form-group select, 
 .form-group textarea,
@@ -153,14 +152,14 @@
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-/* MODERNES DROPDOWN-STYLING (Entfernt den Standard-Browserpfeil) */
+
 .form-group select,
 .start-card select {
     -webkit-appearance: none !important;
     -moz-appearance: none !important;
     appearance: none !important;
     
-    /* Fügt einen eleganten, feinen SVG-Chevron ein */
+
     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234a5568' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
     background-repeat: no-repeat !important;
     background-position: right 16px center !important;
@@ -180,14 +179,14 @@
     outline: none;
 }
 
-/* Validierungsfehler */
+
 .field-errors {
     color: #d32f2f;
     font-size: 13px;
     margin-top: 6px;
 }
 
-/* Navigations-Leiste */
+
 .form-navigation {
     display: flex;
     justify-content: space-between;
@@ -199,7 +198,7 @@
     justify-content: flex-end;
 }
 
-/* Sekundärer Button (Zurück) */
+
 .btn-secondary {
     background-color: transparent;
     border: 1px solid var(--border-color);
@@ -219,7 +218,7 @@
 }
 
 /* ==========================================================================
-   3. FRAGEBOGEN SUCCESS-SEITE
+   FRAGEBOGEN SUCCESS-SEITE
    ========================================================================== */
 .success-card {
     background-color: var(--bg-surface);
@@ -269,7 +268,7 @@
    CLEAN SLIDER-SKALA MIT VERBINDUNGSLINIE (16PX PERFORMANCE EDITION)
    ========================================================================== */
 
-/* 1. DER ÄUẞERE CONTAINER */
+
 body .form-group .likert-radio-group:not(input) {
     display: flex;
     justify-content: space-between;
@@ -282,7 +281,7 @@ body .form-group .likert-radio-group:not(input) {
     z-index: 1;
 }
 
-/* 2. DIE SPALTEN */
+
 body .form-group .likert-radio-group:not(input) > * {
     flex: 1;
     min-width: 0; 
@@ -332,7 +331,7 @@ body .form-group .likert-radio-group:not(input) > * > label {
     color: #2d3748;
 }
 
-/* 3. DIE RADIO-BUTTONS */
+
 body .form-group .likert-radio-group input[type="radio"],
 body .form-group .likert-radio-group > * input[type="radio"],
 body .form-group .likert-radio-group > * > label input[type="radio"] {
@@ -377,4 +376,99 @@ body .form-group .likert-radio-group input[type="radio"]:hover {
 body .form-group .likert-radio-group input[type="radio"]:checked {
     border-color: #0084ff;
     background: radial-gradient(circle, #0084ff 38%, #ffffff 42%, #ffffff 100%) !important;
+}
+
+/* ==========================================================================
+   MOBILE RESPONSIVE OVERRIDES (< 600px)
+   ========================================================================== */
+@media (max-width: 600px) {
+
+    .fragebogen-container {
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+
+    .start-card,
+    .success-card {
+        padding: 25px 20px;
+    }
+
+    .fragebogen-header {
+        margin-bottom: 25px;
+    }
+
+    .fragebogen-header h1 {
+        font-size: 22px;
+    }
+
+    .fragebogen-header h2 {
+        font-size: 17px;
+    }
+
+
+    .form-navigation {
+        flex-direction: column-reverse;
+        gap: 12px;
+        margin-top: 30px;
+    }
+
+    .form-navigation .btn-blue,
+    .form-navigation .btn-secondary {
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+
+    body .form-group .likert-radio-group:not(input) {
+        flex-direction: column;
+        gap: 8px;
+        margin: 15px 0;
+    }
+
+
+    body .form-group .likert-radio-group:not(input) > * {
+        background-image: none !important;
+        padding: 0;
+        width: 100%;
+    }
+
+
+    body .form-group .likert-radio-group:not(input) label,
+    body .form-group .likert-radio-group:not(input) > * > label {
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        text-align: left;
+        gap: 12px;
+        width: 100%;
+        padding: 12px 16px;
+        background-color: #f8fafc;
+        border: 1px solid var(--border-color, #e2e8f0);
+        border-radius: 6px;
+        font-size: 15px;
+        box-sizing: border-box;
+        transition: all 0.15s ease-in-out;
+    }
+
+
+    body .form-group .likert-radio-group input[type="radio"],
+    body .form-group .likert-radio-group > * input[type="radio"],
+    body .form-group .likert-radio-group > * > label input[type="radio"] {
+        margin: 0 !important;
+        width: 20px !important;
+        height: 20px !important;
+        min-width: 20px !important;
+        min-height: 20px !important;
+        flex-shrink: 0;
+    }
+
+
+    body .form-group .likert-radio-group:not(input) label:has(input[type="radio"]:checked),
+    body .form-group .likert-radio-group:not(input) > * > label:has(input[type="radio"]:checked) {
+        background-color: #e6f4ff;
+        border-color: #0084ff;
+        color: #0084ff;
+        font-weight: 700;
+    }
 }

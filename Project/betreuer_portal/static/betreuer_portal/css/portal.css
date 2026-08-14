@@ -1,4 +1,3 @@
-/* betreuer_portal/static/betreuer_portal/css/portal.css */
 
 :root {
     --brand-primary: #009de0;    
@@ -26,7 +25,7 @@ body {
     line-height: 1.6;
 }
 
-/* --- Navigation --- */
+
 .navbar {
     background-color: var(--bg-surface);
     display: flex;
@@ -87,7 +86,7 @@ main {
     color: #ffffff;
 }
 
-/* --- Dashboard Elements & Containers --- */
+
 .generate-box {
     background-color: var(--bg-surface);
     border: 1px solid var(--border-color);
@@ -282,7 +281,7 @@ main {
     margin-bottom: 20px;
 }
 
-/* --- Logout Button --- */
+
 .btn-logout {
     background: none;
     border: 1px solid var(--border-color);
@@ -314,7 +313,7 @@ main {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-/* Zurück-Link */
+
 .generator-container .back-link {
     display: inline-flex;
     align-items: center;
@@ -338,7 +337,7 @@ main {
     letter-spacing: -0.5px;
 }
 
-/* Die Hauptkarte */
+
 .generator-card {
     background: var(--bg-surface, #ffffff);
     border: 1px solid var(--border-color, #cbd5e1);
@@ -356,7 +355,7 @@ main {
     font-weight: 700;
 }
 
-/* Formularfelder in der Karte */
+
 .generator-card .form-group {
     margin-bottom: 22px;
     display: flex;
@@ -399,7 +398,7 @@ main {
     outline: none;
 }
 
-/* Submit Button */
+
 .btn-submit {
     background-color: var(--brand-primary, #0084ff);
     color: #ffffff;
@@ -423,7 +422,7 @@ main {
     transform: translateY(1px);
 }
 
-/* Erfolgs-Box */
+
 .success-container {
     background-color: #f0f9ff;
     border: 1px solid #b9e6fe;
@@ -530,7 +529,7 @@ main {
     margin-bottom: 40px;
 }
 
-/* Karten-Grid */
+
 .case-grid {
     display: grid;
     gap: 20px;
@@ -538,7 +537,7 @@ main {
     margin-top: 15px;
 }
 
-/* Einzelne Fall-Karte */
+
 .case-card {
     background: var(--bg-surface);
     border: 1px solid var(--border-color);
@@ -564,7 +563,7 @@ main {
     margin-bottom: 15px;
 }
 
-/* Die Status-Sektion */
+
 .status-grid-box {
     display: grid;
     grid-template-columns: auto 1fr 28px;
@@ -601,7 +600,7 @@ main {
     color: #27ae60;
 }
 
-/* Fester Platzhalter für die Aktions-Buttons */
+
 .button-slot {
     display: flex;
     justify-content: center;
@@ -610,7 +609,7 @@ main {
     height: 28px;
 }
 
-/* Kleine Aktionsknöpfe (Kopieren / Bearbeiten) */
+
 .btn-emoji-replacement {
     box-sizing: border-box;
     margin: 0;
@@ -643,7 +642,7 @@ main {
     background: #f8f9fa;
 }
 
-/* Unterer Bereich der Karte / Buttons */
+
 .card-footer {
     display: flex;
     gap: 10px;
@@ -669,4 +668,122 @@ main {
     cursor: not-allowed;
     font-size: 0.9em;
     font-weight: 500;
+}
+
+/* ==========================================================================
+   MOBILE RESPONSIVE OVERRIDES (< 600px)
+   ========================================================================== */
+@media (max-width: 600px) {
+
+
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 15px 20px;
+        margin-bottom: 25px;
+    }
+
+    .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .nav-links a {
+        margin-right: 0;
+        font-size: 15px;
+    }
+
+    .user-info {
+        width: 100%;
+        justify-content: space-between;
+        padding-top: 12px;
+        border-top: 1px solid var(--border-color);
+        margin-top: 5px;
+    }
+
+    .btn-logout {
+        margin-left: 0;
+    }
+
+
+    main {
+        padding: 0 15px 30px 15px;
+    }
+
+    .generator-container {
+        margin: 20px auto;
+        padding: 0;
+    }
+
+    .generate-box,
+    .generator-card,
+    .success-container {
+        padding: 25px 20px;
+    }
+
+    .page-title {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+
+
+    .search-bar {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .search-bar input {
+        width: 100%;
+    }
+
+
+    .jugendliche-grid,
+    .case-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+
+    .recent-item,
+    .fall-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 15px;
+    }
+
+    .recent-item .download-icon {
+        align-self: flex-end;
+    }
+
+
+    .copy-group {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .copy-input,
+    .btn-copy {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .btn-copy {
+        text-align: center;
+    }
+
+
+    .card-footer {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .btn-blue-stretched,
+    .btn-disabled {
+        width: 100%;
+        box-sizing: border-box;
+    }
 }

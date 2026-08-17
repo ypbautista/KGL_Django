@@ -28,8 +28,8 @@ class Bezugsperson(Person):
         User,
         on_delete=models.CASCADE,
         related_name="bezugsperson",
-        null=True,  
-        blank=True, 
+        null=True,
+        blank=True,
     )
 
     email = models.EmailField()
@@ -45,6 +45,20 @@ class Bezugsperson(Person):
 
     def __str__(self):
         return f"{self.vorname} {self.nachname}"
+
+
+class Kategorie(models.Model):
+
+    titel = models.CharField(
+        max_length=100
+    )
+
+    class Meta:
+        verbose_name = "Kategorie"
+        verbose_name_plural = "Kategorien"
+
+    def __str__(self):
+        return self.titel
 
 
 class Fragebogen(models.Model):
@@ -169,6 +183,15 @@ class FragebogenAbschnitt(models.Model):
         related_name="abschnitte",
     )
 
+    kategorie = models.ForeignKey(
+        Kategorie,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="abschnitte",
+        verbose_name="Überkategorie",
+    )
+
     titel = models.CharField(
         max_length=100
     )
@@ -189,7 +212,8 @@ class FragebogenAbschnitt(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.fragebogen.titel} | Abschnitt: {self.titel}"
+        kat_prefix = f"[{self.kategorie.titel}] " if self.kategorie else ""
+        return f"{self.fragebogen.titel} | {kat_prefix}Abschnitt: {self.titel}"
 
 
 class FrageVorlage(models.Model):

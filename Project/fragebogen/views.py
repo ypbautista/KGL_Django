@@ -83,12 +83,54 @@ def abschnitt_ausfuellen(request, code, abschnitt_nr):
     )
 
     if request.method == "POST":
+<<<<<<< Updated upstream
+        action = request.POST.get("action")
+
+=======
+>>>>>>> Stashed changes
         form = AbschnittForm(
             request.POST,
             fragebogen_abschnitt=abschnitt,
             abschnitt_antwort=abschnitt_antwort,
         )
 
+<<<<<<< Updated upstream
+        # ==========================================
+        # 1. HANDLE "BACK" ACTION
+        # ==========================================
+        if action == "back":
+            if form.is_valid():
+                abschnitt_antwort, created = (
+                    AbschnittAntwort.objects.update_or_create(
+                        fragebogen_antwort=antwort,
+                        fragebogen_abschnitt=abschnitt,
+                        defaults={
+                            "kommentar": form.cleaned_data["kommentar"]
+                        }
+                    )
+                )
+
+                for frage in form.fragen:
+                    FrageAntwort.objects.update_or_create(
+                        abschnitt_antwort=abschnitt_antwort,
+                        frage=frage,
+                        defaults={
+                            "antwort_wert": form.cleaned_data[f"frage_{frage.id}"]
+                        }
+                    )
+
+            prev_section = max(1, abschnitt_nr - 1)
+            return redirect(
+                "abschnitt_ausfuellen",
+                code=code,
+                abschnitt_nr=prev_section,
+            )
+
+        # ==========================================
+        # 2. HANDLE "NEXT" / SUBMIT ACTION
+        # ==========================================
+=======
+>>>>>>> Stashed changes
         if form.is_valid():
             abschnitt_antwort, created = (
                 AbschnittAntwort.objects.update_or_create(
@@ -109,6 +151,8 @@ def abschnitt_ausfuellen(request, code, abschnitt_nr):
                     }
                 )
 
+<<<<<<< Updated upstream
+=======
             action = request.POST.get("action")
 
             if action == "back":
@@ -118,6 +162,7 @@ def abschnitt_ausfuellen(request, code, abschnitt_nr):
                     abschnitt_nr=abschnitt_nr - 1,
                 )
 
+>>>>>>> Stashed changes
             if action == "next":
                 next_section = abschnitt_nr + 1
 

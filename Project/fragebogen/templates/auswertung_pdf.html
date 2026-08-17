@@ -1,289 +1,384 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <title>Auswertung: {{ fall.fragebogen.titel }}</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm 1.5cm 2cm 1.5cm;
 
-<title>Fragebogen Auswertung</title>
+            @bottom-right {
+                content: "Seite " counter(page) " von " counter(pages);
+                font-size: 8pt;
+                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                color: #7f8c8d;
+            }
 
-<style>
+            @bottom-left {
+                content: "Diagnostische Auswertung";
+                font-size: 8pt;
+                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                color: #7f8c8d;
+            }
+        }
 
-@page {
-    size: A4;
-    margin: 1.5cm;
-}
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #2c3e50;
+            line-height: 1.4;
+            font-size: 10pt;
+            margin: 0;
+            padding: 0;
+        }
 
-body {
-    font-family: Arial, sans-serif;
-    color:#333;
-}
+        h1 {
+            font-size: 18pt;
+            color: #1a252f;
+            margin: 0 0 5px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
+        h2 {
+            font-size: 13pt;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 4px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
 
-h1 {
-    color:#4F81BD;
-    text-align:center;
-}
+        h2.section-title {
+            margin-top: 40px;
+        }
 
+        h2.first-section-title {
+            margin-top: 85px;
+        }
 
-h2 {
-    color:#4F81BD;
-    border-bottom:1px solid #4F81BD;
-    padding-bottom:5px;
-    margin-top:30px;
-}
+        .header-container {
+            border-bottom: 3px double #bdc3c7;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
 
+        .meta-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
 
-.info {
-    margin-bottom:20px;
-}
+        .meta-table td {
+            padding: 6px 10px;
+            font-size: 9.5pt;
+            vertical-align: top;
+        }
 
+        .meta-label {
+            font-weight: bold;
+            color: #7f8c8d;
+            width: 20%;
+        }
 
-.chart {
-    text-align:center;
-    margin-bottom:30px;
-}
+        .meta-value {
+            color: #2c3e50;
+            width: 30%;
+        }
 
+        .chart-section,
+        .chart-container,
+        .chart-box {
+            break-inside: avoid;
+            page-break-inside: avoid;
+            margin-bottom: 15px;
+            text-align: center;
+        }
 
-.chart img {
-    width:500px;
-}
+        .chart-section img,
+        .chart-container img,
+        .chart-box img {
+            width: 10cm;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
 
+        /* KATEGORIE-BLOCK ALS EIGENE KARTE */
+        .category-block {
+            break-inside: avoid;
+            page-break-inside: avoid;
+            margin-bottom: 25px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 12px;
+            background-color: #ffffff;
+        }
 
-table {
-    width:100%;
-    border-collapse:collapse;
-    margin-top:15px;
-}
+        .category-header {
+            padding: 8px 12px;
+            font-size: 11pt;
+            font-weight: bold;
+            border-radius: 6px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            margin-bottom: 12px;
+            color: #1e293b;
+        }
 
+        /* TABELLE MIT EIGENEM RAHMEN */
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 8px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
 
-th {
-    background:#4F81BD;
-    color:white;
-    padding:8px;
-}
+        .data-table th, 
+        .data-table td {
+            padding: 8px 10px;
+            text-align: left;
+            font-size: 9pt;
+        }
 
+        .data-table th {
+            background-color: #f8fafc;
+            color: #475569;
+            font-weight: 600;
+            border-bottom: 2px solid #e2e8f0;
+        }
 
-td {
-    border:1px solid #ccc;
-    padding:8px;
-    font-size:12px;
-}
+        .data-table td {
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+        }
 
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
 
-tr:nth-child(even) {
-    background:#f5f5f5;
-}
+        .text-center { text-align: center !important; }
+        .score-selbst { color: #1d4ed8; font-weight: bold; }
+        .score-fremd { color: #b91c1c; font-weight: bold; }
 
+        /* KOMMENTARE UND ANMERKUNGEN */
+        .comments-container {
+            margin-top: 12px;
+            padding-top: 8px;
+            border-top: 1px dashed #cbd5e1;
+        }
 
-.frage {
-    width:60%;
-}
+        .comments-title {
+            font-weight: bold;
+            font-size: 8.5pt;
+            color: #64748b;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
+        .comment-box {
+            border: 1px solid #e2e8f0;
+            padding: 8px 10px;
+            margin-bottom: 6px;
+            border-radius: 6px;
+            font-size: 8.5pt;
+        }
 
-.wert {
-    text-align:center;
-    font-weight:bold;
-}
+        .comment-box:last-child {
+            margin-bottom: 0;
+        }
 
+        .comment-box.box-selbst {
+            border-left: 4px solid #2563eb;
+            background-color: #f0f9ff;
+        }
 
-.abschnitt {
-    background:#eee;
-    font-weight:bold;
-}
+        .comment-box.box-fremd {
+            border-left: 4px solid #dc2626;
+            background-color: #fef2f2;
+        }
 
+        .comment-author {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 2px;
+            font-size: 8pt;
+        }
 
-</style>
+        .comment-author.author-selbst,
+        .comment-author.selbst {
+            color: #1d4ed8;
+        }
 
+        .comment-author.author-fremd,
+        .comment-author.fremd {
+            color: #b91c1c;
+        }
+
+        .comment-text {
+            color: #334155;
+            font-style: italic;
+        }
+
+        .page-break {
+            clear: both;
+            break-before: page;
+            page-break-before: always;
+        }
+
+        /* HINTERGRUNDFARBEN FUER KATEGORIEN */
+        .cat-bg-0 { background-color: #e0f2fe; }
+        .cat-bg-1 { background-color: #fef9c3; }
+        .cat-bg-2 { background-color: #f3e8ff; }
+        .cat-bg-3 { background-color: #dcfce7; }
+        .cat-bg-4 { background-color: #ffe4e6; }
+        .cat-bg-5 { background-color: #ffedd5; }
+        .cat-bg-6 { background-color: #f1f5f9; }
+    </style>
 </head>
-
-
 <body>
 
-
-<h1>
-    Fragebogen Auswertung
-</h1>
-
-
-<div class="info">
-
-<h2>Person</h2>
-
-<p>
-<strong>Jugendliche Person:</strong>
-{{ fall.jugendliche_person.vorname }}
-{{ fall.jugendliche_person.nachname }}
-</p>
-
-
-<p>
-<strong>Fragebogen:</strong>
-{{ fall.fragebogen.titel }}
-</p>
-
-
-</div>
-
-
-
-<div class="chart">
-
-{% if chart_image %}
-
-<img src="data:image/png;base64,{{ chart_image }}">
-
-{% endif %}
-
-</div>
-
-
-
-
-<h2>
-Antwortvergleich
-</h2>
-
-
-
-<table>
-
-<tr>
-
-<th>
-Frage
-</th>
-
-<th>
-Selbsteinschätzung
-</th>
-
-<th>
-Fremdeinschätzung
-</th>
-
-</tr>
-
-
-
-{% for item in vergleich %}
-
-
-{% ifchanged item.abschnitt %}
-
-<tr>
-
-<td colspan="3" class="abschnitt">
-
-{{ item.abschnitt }}
-
-</td>
-
-</tr>
-
-{% endifchanged %}
-
-
-
-<tr>
-
-<td class="frage">
-{{ item.frage }}
-</td>
-
-
-<td class="wert">
-
-{% if item.selbst %}
-{{ item.selbst }}
-
-{% else %}
--
-{% endif %}
-
-</td>
-
-
-<td class="wert">
-
-{% if item.fremd %}
-{{ item.fremd }}
-
-{% else %}
--
-{% endif %}
-
-</td>
-
-
-</tr>
-
-
-
-{% endfor %}
-
-
-</table>
-
-
-
-
-<h2>
-Ausgefüllt von
-</h2>
-
-
-<table>
-
-<tr>
-
-<th>
-Typ
-</th>
-
-<th>
-Datum
-</th>
-
-</tr>
-
-
-{% if selbsteinschaetzung %}
-
-<tr>
-
-<td>
-Selbsteinschätzung (Jugendliche Person)
-</td>
-
-<td>
-{{ selbsteinschaetzung.end_time|date:"d.m.Y H:i" }}
-</td>
-
-</tr>
-
-{% endif %}
-
-
-
-{% if fremdeinschaetzung %}
-
-<tr>
-
-<td>
-Fremdeinschätzung (Bezugsperson)
-</td>
-
-<td>
-{{ fremdeinschaetzung.end_time|date:"d.m.Y H:i" }}
-</td>
-
-</tr>
-
-{% endif %}
-
-
-</table>
-
-
+    <div class="header-container">
+        <h1>Diagnostische Auswertung</h1>
+        <div style="font-size: 11pt; color: #7f8c8d; margin-bottom: 10px;">{{ fall.fragebogen.titel }}</div>
+
+        <table class="meta-table">
+            <tr>
+                <td class="meta-label">Jugendliche Person:</td>
+                <td class="meta-value"><strong>{{ fall.jugendliche_person }}</strong></td>
+                <td class="meta-label">Betreuer:</td>
+                <td class="meta-value">
+                    <strong>
+                        {% if fremdeinschaetzung and fremdeinschaetzung.einladung.bezugsperson %}
+                            {{ fremdeinschaetzung.einladung.bezugsperson }}
+                        {% elif fall.fremdeinschaetzung and fall.fremdeinschaetzung.bezugsperson %}
+                            {{ fall.fremdeinschaetzung.bezugsperson }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </strong>
+                </td>
+            </tr>
+            <tr>
+                <td class="meta-label">Selbsteinschätzung:</td>
+                <td class="meta-value">
+                    {% if selbsteinschaetzung %}
+                        <span style="color: #27ae60;">✓ Ausgefüllt</span> 
+                        <small>({{ selbsteinschaetzung.end_time|date:"d.m.Y" }})</small>
+                    {% else %}
+                        <span style="color: #e74c3c;">✗ Ausstehend</span>
+                    {% endif %}
+                </td>
+                <td class="meta-label">Fremdeinschätzung:</td>
+                <td class="meta-value">
+                    {% if fremdeinschaetzung %}
+                        <span style="color: #27ae60;">✓ Ausgefüllt</span>
+                        {% if fremdeinschaetzung.end_time %}
+                            <small>({{ fremdeinschaetzung.end_time|date:"d.m.Y" }})</small>
+                        {% endif %}
+                    {% else %}
+                        <span style="color: #e74c3c;">✗ Ausstehend</span>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <h2 class="section-title first-section-title">1. Auswertung der Antworten als Spinnendiagramm</h2>
+
+    {% if radar_chart %}
+    <div class="chart-section">
+        <div class="chart-box">
+            <img src="data:image/png;base64,{{ radar_chart }}" alt="Kompetenz Radardiagramm" style="width: 17cm; max-width: 100%; height: auto; margin: 0 auto; display: block;">
+        </div>
+    </div>
+    {% endif %}
+
+    {% if radar_chart and motivation_chart %}
+    <div class="page-break"></div>
+    {% endif %}
+
+    {% if motivation_chart %}
+    <h2 class="section-title">2. Auswertung der Motivation als Balkendiagramm</h2>
+    
+    <div class="chart-section">
+        <div class="chart-box">
+            <img src="data:image/png;base64,{{ motivation_chart }}" alt="Motivations Diagramm" style="width: 17cm; max-width: 100%; height: auto; margin: 0 auto; display: block;">
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="page-break"></div>
+
+    <h2 class="section-title">3. Detaillierte Ergebnisse nach Kategorien</h2>
+
+    {% for cat in categories_list %}
+    <div class="category-block">
+        <div class="category-header cat-bg-{{ forloop.counter0 }}">
+            Kategorie: {{ cat.titel }}
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th style="width: 40%;">Bereich / Abschnitt</th>
+                    <th style="width: 15%;" class="text-center">Kompetenz<br><small>(Selbst)</small></th>
+                    <th style="width: 15%;" class="text-center">Kompetenz<br><small>(Fremd)</small></th>
+                    <th style="width: 15%;" class="text-center">Motivation<br><small>(Selbst)</small></th>
+                    <th style="width: 15%;" class="text-center">Motivation<br><small>(Fremd)</small></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cat.items %}
+                <tr>
+                    <td><strong>{{ item.title }}</strong></td>
+                    <td class="text-center score-selbst">
+                        {% if item.selbst_komp %}{{ item.selbst_komp }} / 7{% else %}-{% endif %}
+                    </td>
+                    <td class="text-center score-fremd">
+                        {% if item.fremd_komp %}{{ item.fremd_komp }} / 7{% else %}-{% endif %}
+                    </td>
+                    <td class="text-center score-selbst">
+                        {% if item.selbst_motiv %}{{ item.selbst_motiv }} / 7{% else %}-{% endif %}
+                    </td>
+                    <td class="text-center score-fremd">
+                        {% if item.fremd_motiv %}{{ item.fremd_motiv }} / 7{% else %}-{% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% for item in cat.items %}
+            {% if item.selbst_kommentar or item.fremd_kommentar %}
+            <div class="comments-container">
+                <div class="comments-title">
+                    Anmerkungen zu "{{ item.title }}":
+                </div>
+
+                {% if item.selbst_kommentar %}
+                <div class="comment-box box-selbst">
+                    <span class="comment-author author-selbst">Kommentar der Jugendlichen Person:</span> 
+                    <span class="comment-text">"{{ item.selbst_kommentar }}"</span>
+                </div>
+                {% endif %}
+
+                {% if item.fremd_kommentar %}
+                <div class="comment-box box-fremd">
+                    <span class="comment-author author-fremd">Kommentar Betreuer:</span> 
+                    <span class="comment-text">"{{ item.fremd_kommentar }}"</span>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endfor %}
 
 </body>
 </html>

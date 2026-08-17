@@ -59,18 +59,15 @@ def abschnitt_ausfuellen(request, code, abschnitt_nr):
         .order_by("reihenfolge")
     )
 
-
     abschnitt = get_object_or_404(
         FragebogenAbschnitt,
         fragebogen=fragebogen,
         reihenfolge=abschnitt_nr,
     )
 
-
     antwort, created = FragebogenAntwort.objects.get_or_create(
         einladung=einladung
     )
-
 
     abschnitt_antwort = (
         AbschnittAntwort.objects
@@ -81,8 +78,8 @@ def abschnitt_ausfuellen(request, code, abschnitt_nr):
         .first()
     )
 
-
     if request.method == "POST":
+        action = request.POST.get("action")
 
         form = AbschnittForm(
             request.POST,
@@ -90,7 +87,41 @@ def abschnitt_ausfuellen(request, code, abschnitt_nr):
             abschnitt_antwort=abschnitt_antwort,
         )
 
+        # ==========================================
+        # 1. HANDLE "BACK" ACTION
+        # ==========================================
+        if action == "back":
 
+            if form.is_valid():
+                abschnitt_antwort, created = (
+                    AbschnittAntwort.objects.update_or_create(
+                        fragebogen_antwort=antwort,
+                        fragebogen_abschnitt=abschnitt,
+                        defaults={
+                            "kommentar": form.cleaned_data["kommentar"]
+                        }
+                    )
+                )
+
+                for frage in form.fragen:
+                    FrageAntwort.objects.update_or_create(
+                        abschnitt_antwort=abschnitt_antwort,
+                        frage=frage,
+                        defaults={
+                            "antwort_wert": form.cleaned_data[f"frage_{frage.id}"]
+                        }
+                    )
+
+            prev_section = max(1, abschnitt_nr - 1)
+            return redirect(
+                "abschnitt_ausfuellen",
+                code=code,
+                abschnitt_nr=prev_section,
+            )
+
+        # ==========================================
+        # 2. HANDLE "NEXT" / SUBMIT ACTION
+        # ==========================================
         if form.is_valid():
 
             abschnitt_antwort, created = (
@@ -98,12 +129,10 @@ def abschnitt_ausfuellen(request, code, abschnitt_nr):
                     fragebogen_antwort=antwort,
                     fragebogen_abschnitt=abschnitt,
                     defaults={
-                        "kommentar":
-                            form.cleaned_data["kommentar"]
+                        "kommentar": form.cleaned_data["kommentar"]
                     }
                 )
             )
-
 
             for frage in form.fragen:
 
@@ -111,52 +140,27 @@ def abschnitt_ausfuellen(request, code, abschnitt_nr):
                     abschnitt_antwort=abschnitt_antwort,
                     frage=frage,
                     defaults={
-                        "antwort_wert":
-                            form.cleaned_data[
-                                f"frage_{frage.id}"
-                            ]
+                        "antwort_wert": form.cleaned_data[f"frage_{frage.id}"]
                     }
                 )
 
+            next_section = abschnitt_nr + 1
 
-            action = request.POST.get("action")
-
-
-            if action == "back":
+            if next_section <= len(abschnitte):
 
                 return redirect(
                     "abschnitt_ausfuellen",
                     code=code,
-                    abschnitt_nr=abschnitt_nr - 1,
+                    abschnitt_nr=next_section,
                 )
 
+            antwort.end_time = timezone.now()
+            antwort.save()
 
-            if action == "next":
+            einladung.benutzt = True
+            einladung.save()
 
-                next_section = abschnitt_nr + 1
-
-
-                if next_section <= len(abschnitte):
-
-                    return redirect(
-                        "abschnitt_ausfuellen",
-                        code=code,
-                        abschnitt_nr=next_section,
-                    )
-
-
-                antwort.end_time = timezone.now()
-                antwort.save()
-
-
-                einladung.benutzt = True
-                einladung.save()
-
-
-                return redirect(
-                    "success"
-                )
-
+            return redirect("success")
 
     else:
 
@@ -164,7 +168,6 @@ def abschnitt_ausfuellen(request, code, abschnitt_nr):
             fragebogen_abschnitt=abschnitt,
             abschnitt_antwort=abschnitt_antwort,
         )
-
 
     return render(
         request,
@@ -178,7 +181,6 @@ def abschnitt_ausfuellen(request, code, abschnitt_nr):
             "gesamt_abschnitte": len(abschnitte),
         }
     )
-
 
 
 def success(request):

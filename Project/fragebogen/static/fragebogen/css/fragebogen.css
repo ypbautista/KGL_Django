@@ -1,4 +1,3 @@
-
 .start-card {
     background-color: var(--bg-surface);
     border: 1px solid var(--border-color);
@@ -61,12 +60,16 @@
 }
 
 .btn-blue {
+    display: inline-block;
     background-color: var(--brand-primary);
     color: #ffffff;
     border: none;
+    padding: 12px 24px;
+    font-size: 15px;
     border-radius: 2px;
     font-weight: bold;
     cursor: pointer;
+    text-decoration: none;
     transition: all 0.15s ease-in-out;
 }
 
@@ -78,15 +81,6 @@
 .btn-blue:active {
     transform: translateY(1px);
 }
-
-.btn-blue.btn-full {
-    width: 100%;
-    box-sizing: border-box;
-    text-align: center;
-    padding: 14px 24px;
-    font-size: 16px;
-}
-
 
 .fragebogen-container {
     max-width: 650px;
@@ -135,8 +129,8 @@
 }
 
 
-.form-group input:not([type="radio"]):not([type="checkbox"]), 
-.form-group select, 
+.form-group input:not([type="radio"]):not([type="checkbox"]),
+.form-group select,
 .form-group textarea,
 .start-card input:not([type="radio"]):not([type="checkbox"]),
 .start-card select,
@@ -158,7 +152,7 @@
     -webkit-appearance: none !important;
     -moz-appearance: none !important;
     appearance: none !important;
-    
+
 
     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234a5568' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
     background-repeat: no-repeat !important;
@@ -168,8 +162,8 @@
     cursor: pointer;
 }
 
-.form-group input:not([type="radio"]):not([type="checkbox"]):focus, 
-.form-group select:focus, 
+.form-group input:not([type="radio"]):not([type="checkbox"]):focus,
+.form-group select:focus,
 .form-group textarea:focus,
 .start-card input:not([type="radio"]):not([type="checkbox"]):focus,
 .start-card select:focus,
@@ -269,11 +263,11 @@
    ========================================================================== */
 
 
-body .form-group .likert-radio-group:not(input) {
+.likert-radio-group {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    max-width: 900px; 
+    max-width: 900px;
     margin: 25px 0 20px 0;
     padding: 0;
     list-style: none;
@@ -282,49 +276,46 @@ body .form-group .likert-radio-group:not(input) {
 }
 
 
-body .form-group .likert-radio-group:not(input) > * {
+.likert-radio-group>* {
     flex: 1;
-    min-width: 0; 
+    min-width: 0;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     margin: 0;
-    padding: 0 4px; 
+    padding: 0 4px;
     position: relative;
     z-index: 2;
 
     background-image: linear-gradient(to right, #cbd5e1, #cbd5e1);
     background-size: 100% 2px;
-    background-position: 0 8px; 
+    background-position: 0 8px;
     background-repeat: no-repeat;
 }
 
-body .form-group .likert-radio-group:not(input) > *:first-child,
-body .form-group .likert-radio-group:not(input) > *:first-of-type {
+.likert-radio-group>*:first-child {
     background-size: 50% 2px;
     background-position: right 8px;
 }
 
-body .form-group .likert-radio-group:not(input) > *:last-child,
-body .form-group .likert-radio-group:not(input) > *:last-of-type {
+.likert-radio-group>*:last-child {
     background-size: 50% 2px;
     background-position: left 8px;
 }
 
-body .form-group .likert-radio-group:not(input) label,
-body .form-group .likert-radio-group:not(input) > * > label {
+.likert-radio-group label {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
     justify-content: flex-start;
     text-align: center;
     width: 100%;
     cursor: pointer;
-    
-    white-space: normal; 
+
+    white-space: normal;
     word-break: break-word;
-    
+
     font-size: 13px;
     line-height: 1.3;
     font-weight: 600;
@@ -332,60 +323,58 @@ body .form-group .likert-radio-group:not(input) > * > label {
 }
 
 
-body .form-group .likert-radio-group input[type="radio"],
-body .form-group .likert-radio-group > * input[type="radio"],
-body .form-group .likert-radio-group > * > label input[type="radio"] {
+.likert-radio-group input[type="radio"] {
     -webkit-appearance: none !important;
     -moz-appearance: none !important;
     appearance: none !important;
-    
+
     display: block;
     padding: 0 !important;
-    
+
     width: 16px !important;
     max-width: 16px !important;
     min-width: 16px !important;
-    
+
     height: 16px !important;
     max-height: 16px !important;
     min-height: 16px !important;
-    
+
     flex-shrink: 0;
     aspect-ratio: 1 / 1;
-    
-    border: 2px solid #cbd5e1; 
-    border-radius: 50%; 
-    
+
+    border: 2px solid #cbd5e1;
+    border-radius: 50%;
+
     background-color: #ffffff !important;
     background: #ffffff !important;
-    
-    margin: 0 auto 8px auto; 
+
+    margin: 0 auto 8px auto;
     cursor: pointer;
-    
+
     position: relative;
     z-index: 5;
     box-sizing: border-box;
     transition: all 0.15s ease-in-out;
 }
 
-body .form-group .likert-radio-group input[type="radio"]:hover {
+.likert-radio-group input[type="radio"]:hover {
     border-color: #0084ff;
     box-shadow: 0 0 0 3px rgba(0, 132, 255, 0.15);
 }
 
-body .form-group .likert-radio-group input[type="radio"]:checked {
+.likert-radio-group input[type="radio"]:checked {
     border-color: #0084ff;
     background: radial-gradient(circle, #0084ff 38%, #ffffff 42%, #ffffff 100%) !important;
 }
 
 /* ==========================================================================
-   MOBILE RESPONSIVE OVERRIDES (< 600px)
+   MOBILE RESPONSIVE OVERRIDES (< 768px)
    ========================================================================== */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
 
     .fragebogen-container {
         margin: 20px auto;
-        padding: 0 15px;
+        padding: 35px;
     }
 
     .start-card,
@@ -410,6 +399,13 @@ body .form-group .likert-radio-group input[type="radio"]:checked {
         flex-direction: column-reverse;
         gap: 12px;
         margin-top: 30px;
+
+        position: sticky;
+        bottom: 0;
+        z-index: 100;
+
+        background-color: var(--bg-surface);
+        padding-bottom: 20px;
     }
 
     .form-navigation .btn-blue,
@@ -420,22 +416,22 @@ body .form-group .likert-radio-group input[type="radio"]:checked {
     }
 
 
-    body .form-group .likert-radio-group:not(input) {
+    .likert-radio-group:not(input) {
         flex-direction: column;
         gap: 8px;
         margin: 15px 0;
     }
 
 
-    body .form-group .likert-radio-group:not(input) > * {
+    .likert-radio-group:not(input)>* {
         background-image: none !important;
         padding: 0;
         width: 100%;
     }
 
 
-    body .form-group .likert-radio-group:not(input) label,
-    body .form-group .likert-radio-group:not(input) > * > label {
+    .likert-radio-group:not(input) label,
+    .likert-radio-group:not(input)>*>label {
         flex-direction: row;
         align-items: center;
         justify-content: flex-start;
@@ -452,9 +448,9 @@ body .form-group .likert-radio-group input[type="radio"]:checked {
     }
 
 
-    body .form-group .likert-radio-group input[type="radio"],
-    body .form-group .likert-radio-group > * input[type="radio"],
-    body .form-group .likert-radio-group > * > label input[type="radio"] {
+    .likert-radio-group input[type="radio"],
+    .likert-radio-group>* input[type="radio"],
+    .likert-radio-group>*>label input[type="radio"] {
         margin: 0 !important;
         width: 20px !important;
         height: 20px !important;
@@ -464,11 +460,20 @@ body .form-group .likert-radio-group input[type="radio"]:checked {
     }
 
 
-    body .form-group .likert-radio-group:not(input) label:has(input[type="radio"]:checked),
-    body .form-group .likert-radio-group:not(input) > * > label:has(input[type="radio"]:checked) {
+    .likert-radio-group:not(input) label:has(input[type="radio"]:checked),
+    .likert-radio-group:not(input)>*>label:has(input[type="radio"]:checked) {
         background-color: #e6f4ff;
         border-color: #0084ff;
         color: #0084ff;
         font-weight: 700;
+    }
+
+    .questions-list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-group:has(#id_kommentar) {
+        order: 999;
     }
 }
